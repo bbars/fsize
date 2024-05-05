@@ -1,4 +1,4 @@
-package fsize
+package units
 
 import (
 	"fmt"

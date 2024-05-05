@@ -1,4 +1,4 @@
-module github.com/bbars/fsize
+module github.com/bbars/units
 
 go 1.22.1
 
