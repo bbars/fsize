@@ -3,6 +3,7 @@ package units
 import (
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -125,5 +126,34 @@ func (s Size) units() string {
 		return ""
 	default:
 		return "?"
+	}
+}
+
+func ParseSize(s string) (Size, error) {
+	f, units, err := parseFloat(s)
+	if err != nil {
+		return 0, err
+	}
+
+	units = strings.TrimLeft(units, " ")
+	if len(units) > 5 {
+		return 0, fmt.Errorf("unknown units")
+	}
+
+	switch strings.ToLower(units) {
+	case "b", "bytes", "":
+		return Size(f), nil
+	case "k", "kib":
+		return Size(f * float64(KiB)), nil
+	case "m", "mib":
+		return Size(f * float64(MiB)), nil
+	case "g", "gib":
+		return Size(f * float64(GiB)), nil
+	case "t", "tib":
+		return Size(f * float64(TiB)), nil
+	case "p", "pib":
+		return Size(f * float64(PiB)), nil
+	default:
+		return 0, fmt.Errorf("unknown size units: %s", units)
 	}
 }
